@@ -37,8 +37,8 @@ const bootstrapApp = async () => {
     await seedDatabase();
 
     const schema = await TypeGraphQl.buildSchema({
-      // resolvers: [HeroResolver, VaultResolver, AuthTokenResolver],
-      resolvers: [HeroResolver, VaultResolver],
+      resolvers: [HeroResolver, VaultResolver, AuthTokenResolver],
+      // resolvers: [HeroResolver, VaultResolver],
       container: Container,
       authChecker,
     });

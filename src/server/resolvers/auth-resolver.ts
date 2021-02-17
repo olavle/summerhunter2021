@@ -1,34 +1,33 @@
 import { Resolver, Query, ObjectType, Field, Arg } from 'type-graphql';
 import { Service } from 'typedi';
+import { Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
 import { Hero } from '../entities/hero';
 import { AuthService } from '../services/auth-service';
 import { HeroResolver } from './hero-resolver';
 
 @ObjectType()
 class AuthToken {
-	@Field()
-	jwt: string;
+  @Field()
+  jwt: string;
 }
 
 @Service()
 @Resolver((of) => AuthToken)
 export class AuthTokenResolver {
-	constructor() {}
+  constructor(
+    @InjectRepository(Hero) private readonly heroRepository: Repository<Hero>
+  ) {}
+  @Query((returns) => AuthToken)
+  authenticate(@Arg('userId') userId: string): AuthToken {
+    return { jwt: AuthService().generateJwtForUserId(userId) };
+  }
 
-	@Query((returns) => AuthToken)
-	authenticate(@Arg('userId') userId: string): AuthToken {
-		
-		return { jwt: AuthService().generateJwtForUserId(userId) };
-	}
-
-	// @Query((returns) => AuthToken)
-	// authenticate(@Arg('hero') hero: any): AuthToken {
-	// 	// return { jwt: AuthService().generateJwtForUserId(userId) };
-	// 	return { jwt: AuthService().generateJwtForHero(hero) }
-	// }
-
-	// @Query((returns) => AuthToken)
-	// authenticate(@Arg('role') role: string): AuthToken {
-	// 	return { jwt: AuthService().generateJwtForRole(role) };
-	// }
+  @Query((returns) => AuthToken)
+  secureHero(@Arg('id') id: string): Promise<AuthToken> {
+    const found = this.heroRepository.findOne(id).then((foundHero) => {
+      return { jwt: AuthService().generateJwtForHero(foundHero) };
+    });
+    return found;
+  }
 }
