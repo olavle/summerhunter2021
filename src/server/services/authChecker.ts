@@ -13,7 +13,7 @@ export const authChecker: AuthChecker<Context> = (
     const tokenFromHeader = context.token;
     const decrypted: any = jwt.verify(tokenFromHeader, process.env.JWT_SECRET);
 
-    if (roles.includes(decrypted.role)) {
+    if (roles.includes(decrypted.hero.role)) {
       console.log('Auth checker passes');
       return true;
     }
