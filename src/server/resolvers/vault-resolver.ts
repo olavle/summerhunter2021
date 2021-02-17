@@ -1,4 +1,4 @@
-import { Resolver, Query } from 'type-graphql';
+import { Resolver, Query, Authorized } from 'type-graphql';
 
 import { Vault } from '../entities/vault';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -10,6 +10,8 @@ import { Service } from 'typedi';
 export class VaultResolver {
 	constructor(@InjectRepository(Vault) private readonly vaultRepository: Repository<Vault>) {}
 
+
+	@Authorized("HERO")
 	@Query((returns) => Vault)
 	vault(): Promise<Vault> {
 		return this.vaultRepository.findOne();
