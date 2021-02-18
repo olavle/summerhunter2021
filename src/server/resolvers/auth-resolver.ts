@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { Hero } from '../entities/hero';
 import { AuthService } from '../services/auth-service';
-import { HeroResolver } from './hero-resolver';
 
 @ObjectType()
 class AuthToken {

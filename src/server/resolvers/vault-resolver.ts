@@ -6,14 +6,14 @@ import { Repository } from 'typeorm';
 import { Service } from 'typedi';
 
 @Service()
-@Resolver(of => Vault)
+@Resolver((of) => Vault)
 export class VaultResolver {
-	constructor(@InjectRepository(Vault) private readonly vaultRepository: Repository<Vault>) {}
+  constructor(
+    @InjectRepository(Vault) private readonly vaultRepository: Repository<Vault>
+  ) {}
 
-
-	@Authorized("HERO")
-	@Query((returns) => Vault)
-	vault(): Promise<Vault> {
-		return this.vaultRepository.findOne();
-	}
+  @Query((returns) => Vault)
+  vault(): Promise<Vault> {
+    return this.vaultRepository.findOne();
+  }
 }

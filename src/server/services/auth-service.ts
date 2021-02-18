@@ -6,10 +6,8 @@ const JWT_SIGNING_SECRET = process.env.JWT_SECRET;
 
 const generateJwtForUserId = (userId: string) => jwt.sign({ userId }, JWT_SIGNING_SECRET);
 const generateJwtForHero = (hero: Hero) => jwt.sign({ hero }, JWT_SIGNING_SECRET);
-const generateJwtForRole = (role: string) => jwt.sign({ role }, JWT_SIGNING_SECRET)
 
 export const AuthService = () => ({
 	generateJwtForUserId,
 	generateJwtForHero,
-	generateJwtForRole
 });
